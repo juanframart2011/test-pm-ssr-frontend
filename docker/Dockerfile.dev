@@ -1,0 +1,24 @@
+# Imagen de desarrollo: Vite dev server con HMR dentro del contenedor.
+# Node 24 LTS, alineado con el entorno objetivo.
+FROM node:24-alpine
+
+ENV NODE_ENV=development \
+    CI=true
+
+WORKDIR /app
+
+# Capa de dependencias: se invalida solo si cambia el manifiesto.
+COPY package.json package-lock.json ./
+
+# npm >= 11 bloquea los install scripts por defecto; esbuild necesita el suyo
+# para descargar su binario nativo, así que se ejecuta de forma explícita.
+RUN npm ci --no-audit --no-fund \
+    && node node_modules/esbuild/install.js
+
+# El código se monta como volumen en runtime (ver docker-compose.yml); esta copia
+# solo permite que la imagen sea utilizable por sí sola.
+COPY . .
+
+EXPOSE 5173
+
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]

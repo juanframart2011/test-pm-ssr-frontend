@@ -1,0 +1,17 @@
+node_modules
+dist
+dist-ssr
+coverage
+.git
+.gitignore
+.github
+.sf
+.vscode
+.idea
+*.log
+.env
+.env.*
+!.env.example
+Dockerfile*
+docker-compose*.yml
+*.pdf
