@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 
 import TarifaCard from '@/components/TarifaCard.vue'
 import { useNotificationsStore } from '@/stores/notifications.store'
 import { useTarifasStore } from '@/stores/tarifas.store'
 
+const route = useRoute()
+const router = useRouter()
 const tarifas = useTarifasStore()
 const notificaciones = useNotificationsStore()
 const { cargando, resultados, ultimoIdBuscado, locales } = storeToRefs(tarifas)
@@ -61,6 +64,15 @@ function limpiar() {
   idBusqueda.value = ''
   tarifas.limpiarBusqueda()
 }
+
+// Permite llegar aquí desde el alta (`/consulta?id=123`) con la búsqueda ya resuelta.
+onMounted(() => {
+  const id = route.query.id
+  if (typeof id === 'string' && /^\d+$/.test(id)) {
+    buscarId(id)
+    void router.replace({ name: 'consulta' })
+  }
+})
 
 function eliminarLocal(idTarifa: number) {
   tarifas.eliminarLocal(idTarifa)
