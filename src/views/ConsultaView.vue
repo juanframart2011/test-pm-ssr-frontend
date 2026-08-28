@@ -160,7 +160,7 @@ function eliminarLocal(idTarifa: number) {
 
     <!-- Resultados -->
     <template v-else-if="resultados.length">
-      <div class="d-flex align-center ga-2 px-1">
+      <div class="d-flex align-center ga-2 px-1" role="status" aria-live="polite">
         <v-icon icon="mdi-format-list-bulleted" size="18" class="text-medium-emphasis" />
         <span class="text-subtitle-2 font-weight-bold">
           Resultados para el ID {{ ultimoIdBuscado }}

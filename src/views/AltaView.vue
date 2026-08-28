@@ -420,17 +420,18 @@ function cancelar(opciones: { silencioso?: boolean } = {}) {
         </v-row>
       </v-card>
 
-      <!-- Acciones -->
-      <v-card class="pa-4">
+      <!-- Acciones: quedan siempre a la vista al pie del formulario. -->
+      <v-card class="pa-4 acciones-card">
         <div class="d-flex flex-wrap align-center justify-space-between ga-3">
           <span class="text-caption text-medium-emphasis">
             Los campos marcados con * son obligatorios.
           </span>
-          <div class="d-flex ga-2">
+          <div class="d-flex ga-2 flex-grow-1 flex-sm-grow-0">
             <v-btn
               variant="tonal"
               color="error"
               prepend-icon="mdi-close-circle-outline"
+              class="flex-grow-1 flex-sm-grow-0"
               @click="cancelar()"
             >
               Cancelar
@@ -440,6 +441,7 @@ function cancelar(opciones: { silencioso?: boolean } = {}) {
               color="primary"
               variant="flat"
               prepend-icon="mdi-check-circle-outline"
+              class="flex-grow-1 flex-sm-grow-0"
               :loading="guardando"
               :disabled="!camposCompletos"
             >
@@ -451,3 +453,13 @@ function cancelar(opciones: { silencioso?: boolean } = {}) {
     </div>
   </v-form>
 </template>
+
+<style scoped lang="scss">
+.acciones-card {
+  position: sticky;
+  bottom: 12px;
+  z-index: 2;
+  backdrop-filter: blur(10px);
+  background: rgba(var(--v-theme-surface), 0.9);
+}
+</style>

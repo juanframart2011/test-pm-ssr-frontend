@@ -10,6 +10,9 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [vue(), vuetify({ autoImport: true })],
+    // Explícito: dentro del contenedor node_modules es un volumen y Vite terminaba
+    // escribiendo la caché del optimizador en la raíz del proyecto (./.vite).
+    cacheDir: 'node_modules/.vite',
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
