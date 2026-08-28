@@ -1,0 +1,64 @@
+html,
+body,
+#app {
+  min-height: 100%;
+}
+
+// Fondo con un degradado sutil dependiente del tema activo.
+.app-shell {
+  position: relative;
+  isolation: isolate;
+
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(1100px 520px at 8% -10%, rgba(61, 90, 254, 0.16), transparent 60%),
+      radial-gradient(900px 480px at 100% 0%, rgba(0, 184, 169, 0.14), transparent 62%);
+    pointer-events: none;
+  }
+}
+
+// Anillo de foco consistente para navegación por teclado.
+:focus-visible {
+  outline: 2px solid rgb(var(--v-theme-primary));
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.section-title {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.text-mono {
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+// Transición entre las vistas de Consulta y Alta.
+.view-fade-enter-active,
+.view-fade-leave-active {
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease;
+}
+
+.view-fade-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.view-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .view-fade-enter-active,
+  .view-fade-leave-active {
+    transition: none;
+  }
+}

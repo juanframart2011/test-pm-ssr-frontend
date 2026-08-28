@@ -1,0 +1,39 @@
+services:
+  # Entorno de desarrollo con hot-reload (HMR) sobre el código del host.
+  web:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dev
+    image: tarifas-frontend:dev
+    container_name: tarifas-frontend-dev
+    ports:
+      - '${APP_PORT:-5173}:5173'
+    volumes:
+      # El código del host se monta en el contenedor: cualquier cambio dispara HMR.
+      - .:/app
+      # Volumen anónimo para que node_modules del contenedor no sea pisado por el host
+      # (los binarios nativos son de Linux, no de Windows/macOS).
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      # Fuerza el watcher por polling: los eventos inotify no cruzan los bind
+      # mounts de Docker Desktop en Windows/macOS.
+      - CHOKIDAR_USEPOLLING=true
+      - VITE_API_BASE_URL=${VITE_API_BASE_URL:-/api}
+      - VITE_API_TARGET=${VITE_API_TARGET:-https://ebind-dev.egl-cloud.com}
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
+  # Build de producción servido por nginx. Se levanta solo con:
+  #   docker compose --profile prod up --build web-prod
+  web-prod:
+    profiles: ['prod']
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    image: tarifas-frontend:prod
+    container_name: tarifas-frontend-prod
+    ports:
+      - '${APP_PROD_PORT:-8080}:8080'
+    restart: unless-stopped
